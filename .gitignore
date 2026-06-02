@@ -1,0 +1,18 @@
+# macOS
+.DS_Store
+
+# Godot editor/import cache
+.godot/
+
+# Godot export output
+export/
+exports/
+build/
+builds/
+
+# Logs and temporary files
+*.log
+tmp/
+temp/
+
+# Keep source assets, scenes, scripts, docs, and .import metadata tracked.

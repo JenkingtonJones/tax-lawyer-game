@@ -1,0 +1,792 @@
+{
+  "arc_id": "customs_practice_opens",
+  "title": "Customs Practice Opens",
+  "source_file": "/opt/mantaculus/projects/Tax_Lawyer/TAX_CASES.md",
+  "global_locations": [
+    "office_hub",
+    "street_map",
+    "customs_house",
+    "port_warehouse",
+    "business_district",
+    "industrial_edge",
+    "product_lab",
+    "tribunal_room"
+  ],
+  "cases": [
+    {
+      "id": "skulls_in_the_mail",
+      "title": "The Skulls In The Mail",
+      "source_part": 5,
+      "difficulty": 1,
+      "client_pitch": "An oddities importer has cleaned dog, cat, and kangaroo skulls and jawbones from Australia and wants an advance customs ruling for personal display items.",
+      "primary_issue": "Whether cleaned taxidermied skulls and jawbones can be presented as collectors' pieces of zoological or anatomical interest.",
+      "locations": [
+        "office_hub",
+        "port_warehouse",
+        "customs_house"
+      ],
+      "npcs": [
+        {
+          "id": "oddities_importer",
+          "role": "client",
+          "placeholder_sprite": "elderly_client"
+        },
+        {
+          "id": "ruling_officer",
+          "role": "customs officer",
+          "placeholder_sprite": "elderly_client"
+        }
+      ],
+      "evidence": [
+        {
+          "id": "sample_cleaned_skulls",
+          "name": "Cleaned skull samples",
+          "type": "item",
+          "summary": "Dog, cat, and kangaroo skulls and jawbones are fully cleaned and preserved dry."
+        },
+        {
+          "id": "cleaning_process_note",
+          "name": "Cleaning process note",
+          "type": "document",
+          "summary": "The goods were naturally decomposed, soaked in dish soap, then treated with hydrogen peroxide."
+        },
+        {
+          "id": "display_use_statement",
+          "name": "Display use statement",
+          "type": "interview",
+          "summary": "The goods will be used as personal display items."
+        },
+        {
+          "id": "draft_advance_ruling",
+          "name": "Draft advance ruling",
+          "type": "document",
+          "summary": "The proposed classification is collectors' pieces of zoological or anatomical interest."
+        }
+      ],
+      "interactions": [
+        {
+          "id": "intake_origin_use",
+          "location": "office_hub",
+          "actor": "oddities_importer",
+          "kind": "interview",
+          "prompt": "Ask what the goods are and why they are being imported.",
+          "discovers": [
+            "display_use_statement"
+          ]
+        },
+        {
+          "id": "inspect_skull_samples",
+          "location": "port_warehouse",
+          "actor": "sample_table",
+          "kind": "inspect_item",
+          "prompt": "Inspect the skull and jawbone samples.",
+          "discovers": [
+            "sample_cleaned_skulls",
+            "cleaning_process_note"
+          ]
+        },
+        {
+          "id": "review_ruling_request",
+          "location": "office_hub",
+          "actor": "desk",
+          "kind": "review_document",
+          "prompt": "Review the draft advance ruling request.",
+          "discovers": [
+            "draft_advance_ruling"
+          ]
+        },
+        {
+          "id": "submit_ruling_position",
+          "location": "customs_house",
+          "actor": "ruling_officer",
+          "kind": "resolution",
+          "prompt": "Submit the classification theory."
+        }
+      ],
+      "theories": [
+        {
+          "id": "preserved_collectors_pieces",
+          "label": "Collectors' pieces",
+          "summary": "Tell the full product story: preserved animal skulls and jawbones for personal display.",
+          "quality": "strong",
+          "requires_evidence": [
+            "sample_cleaned_skulls",
+            "cleaning_process_note",
+            "display_use_statement"
+          ]
+        },
+        {
+          "id": "generic_animal_products",
+          "label": "Generic animal products",
+          "summary": "Avoid the odd details and describe them broadly as animal products.",
+          "quality": "weak",
+          "requires_evidence": [
+            "sample_cleaned_skulls"
+          ]
+        },
+        {
+          "id": "food_or_agriculture",
+          "label": "Food/agriculture",
+          "summary": "Treat the remains as animal-origin food or agricultural goods.",
+          "quality": "bad",
+          "requires_evidence": []
+        }
+      ],
+      "resolutions": {
+        "full": {
+          "requires_theory": "preserved_collectors_pieces",
+          "minimum_evidence_count": 3,
+          "result_text": "The ruling officer accepts the product story. The skulls are treated as collectors' pieces, and the importer learns that weird facts can be useful facts."
+        },
+        "partial": {
+          "requires_theory": "generic_animal_products",
+          "minimum_evidence_count": 2,
+          "result_text": "The file survives, but the client is less confident because the request made an easy display-item story sound evasive."
+        },
+        "bad": {
+          "result_text": "The file closes awkwardly. Customs asks unnecessary animal-product questions because the submission ignored the actual display use."
+        }
+      },
+      "rewards": {
+        "full": {
+          "money": 250,
+          "reputation": 1,
+          "audit_risk": -5,
+          "precedent_note": "advance_rulings_need_product_story"
+        },
+        "partial": {
+          "money": 150,
+          "reputation": 0,
+          "audit_risk": 0
+        },
+        "bad": {
+          "money": 75,
+          "reputation": 0,
+          "audit_risk": 8
+        }
+      },
+      "asset_needs": [
+        "oddities importer NPC",
+        "skull display samples",
+        "advance ruling letter"
+      ]
+    },
+    {
+      "id": "retail_set_panic",
+      "title": "Retail Set Panic",
+      "source_part": 2,
+      "difficulty": 2,
+      "client_pitch": "A gift-box distributor wants one tariff answer for multiple retail bundles and assumes every box sold together is a set.",
+      "primary_issue": "Whether goods put together for retail sale are intended to be used together before essential character is considered.",
+      "locations": [
+        "office_hub",
+        "business_district",
+        "port_warehouse",
+        "customs_house"
+      ],
+      "npcs": [
+        {
+          "id": "gift_box_distributor",
+          "role": "client",
+          "placeholder_sprite": "elderly_client"
+        },
+        {
+          "id": "classification_officer",
+          "role": "customs officer",
+          "placeholder_sprite": "elderly_client"
+        }
+      ],
+      "evidence": [
+        {
+          "id": "canned_goods_assortment",
+          "name": "Canned goods assortment",
+          "type": "item_card",
+          "summary": "Shrimp, pate, cheese, bacon, and cocktail sausages are packaged together but do not form a single joint use."
+        },
+        {
+          "id": "sandwich_fries_meal",
+          "name": "Sandwich and fries",
+          "type": "item_card",
+          "summary": "A beef sandwich and fries form a meal; essential character is the sandwich."
+        },
+        {
+          "id": "spaghetti_meal_kit",
+          "name": "Spaghetti meal kit",
+          "type": "item_card",
+          "summary": "Uncooked spaghetti, grated cheese, and tomato sauce form a meal kit; essential character is spaghetti."
+        },
+        {
+          "id": "coffee_cup_saucer_box",
+          "name": "Coffee, cup, and saucer",
+          "type": "item_card",
+          "summary": "A coffee jar with a ceramic cup and saucer is a retail selection, not a set for the rule."
+        },
+        {
+          "id": "wco_set_rule_note",
+          "name": "Set rule note",
+          "type": "document",
+          "summary": "The set rule applies to goods intended to be used together; essential character comes after that threshold."
+        }
+      ],
+      "interactions": [
+        {
+          "id": "interview_distributor_use",
+          "location": "business_district",
+          "actor": "gift_box_distributor",
+          "kind": "interview",
+          "prompt": "Ask whether customers use each bundle together or just receive a selection.",
+          "discovers": [
+            "wco_set_rule_note"
+          ]
+        },
+        {
+          "id": "inspect_bundle_cards",
+          "location": "port_warehouse",
+          "actor": "bundle_table",
+          "kind": "inspect_item",
+          "prompt": "Inspect all four retail bundles.",
+          "discovers": [
+            "canned_goods_assortment",
+            "sandwich_fries_meal",
+            "spaghetti_meal_kit",
+            "coffee_cup_saucer_box"
+          ]
+        },
+        {
+          "id": "sort_retail_sets",
+          "location": "office_hub",
+          "actor": "desk",
+          "kind": "sorting",
+          "prompt": "Sort each bundle into set or selection, then assign essential character where the rule applies."
+        },
+        {
+          "id": "explain_set_rule",
+          "location": "customs_house",
+          "actor": "classification_officer",
+          "kind": "resolution",
+          "prompt": "Explain why not every retail box is a set."
+        }
+      ],
+      "sorting_answers": {
+        "canned_goods_assortment": {
+          "category": "selection",
+          "essential_character": ""
+        },
+        "sandwich_fries_meal": {
+          "category": "set",
+          "essential_character": "sandwich"
+        },
+        "spaghetti_meal_kit": {
+          "category": "set",
+          "essential_character": "spaghetti"
+        },
+        "coffee_cup_saucer_box": {
+          "category": "selection",
+          "essential_character": ""
+        }
+      },
+      "theories": [
+        {
+          "id": "threshold_then_essential_character",
+          "label": "Threshold first",
+          "summary": "Ask whether the goods are intended to be used together before applying essential character.",
+          "quality": "strong",
+          "requires_evidence": [
+            "wco_set_rule_note"
+          ]
+        },
+        {
+          "id": "all_retail_boxes_are_sets",
+          "label": "All boxes are sets",
+          "summary": "Treat everything packaged together for retail sale as a set.",
+          "quality": "weak",
+          "requires_evidence": []
+        },
+        {
+          "id": "highest_value_component",
+          "label": "Highest value wins",
+          "summary": "Pick the most valuable component in each bundle.",
+          "quality": "bad",
+          "requires_evidence": []
+        }
+      ],
+      "resolutions": {
+        "full": {
+          "requires_theory": "threshold_then_essential_character",
+          "minimum_correct_sorts": 4,
+          "result_text": "The officer accepts the threshold analysis. The client learns that a box is not a magic spell."
+        },
+        "partial": {
+          "minimum_correct_sorts": 3,
+          "result_text": "The advice is mostly useful, but one bundle is still exposed to a bad classification position."
+        },
+        "bad": {
+          "result_text": "The client leaves with a rule that is too broad and an audit file that will age badly."
+        }
+      },
+      "rewards": {
+        "full": {
+          "money": 325,
+          "reputation": 1,
+          "audit_risk": -3,
+          "precedent_note": "essential_character_after_set_rule"
+        },
+        "partial": {
+          "money": 225,
+          "reputation": 0,
+          "audit_risk": 3
+        },
+        "bad": {
+          "money": 100,
+          "reputation": 0,
+          "audit_risk": 12
+        }
+      },
+      "asset_needs": [
+        "gift-box distributor NPC",
+        "four bundle item cards",
+        "sorting board UI"
+      ]
+    },
+    {
+      "id": "dog_chew_apocalypse",
+      "title": "Dog Chew Apocalypse",
+      "source_part": 3,
+      "difficulty": 3,
+      "client_pitch": "A pet product importer has six dog chew SKUs under review, including a cheese-based chew customs has flagged as a compliance priority.",
+      "primary_issue": "Whether each chew is classified by material composition and production method rather than consumer-facing purpose.",
+      "locations": [
+        "office_hub",
+        "port_warehouse",
+        "industrial_edge",
+        "customs_house"
+      ],
+      "npcs": [
+        {
+          "id": "pet_product_importer",
+          "role": "client",
+          "placeholder_sprite": "elderly_client"
+        },
+        {
+          "id": "plant_worker",
+          "role": "production witness",
+          "placeholder_sprite": "elderly_client"
+        },
+        {
+          "id": "compliance_officer",
+          "role": "customs compliance officer",
+          "placeholder_sprite": "elderly_client"
+        }
+      ],
+      "evidence": [
+        {
+          "id": "plain_cut_bone_sample",
+          "name": "Plain cut bone sample",
+          "type": "item",
+          "summary": "A cleaned and simply cut bone chew."
+        },
+        {
+          "id": "bone_with_tissue_sample",
+          "name": "Bone with tissue sample",
+          "type": "item",
+          "summary": "A bone chew retaining meat, cartilage, ears, tendons, snouts, or other offal."
+        },
+        {
+          "id": "extruded_chew_formula",
+          "name": "Extruded chew formula",
+          "type": "document",
+          "summary": "Animal or vegetable inputs are extruded with binders and flavourings."
+        },
+        {
+          "id": "rawhide_chew_sample",
+          "name": "Rawhide chew sample",
+          "type": "item",
+          "summary": "Flavoured rawhide sold for chewing but made from leather."
+        },
+        {
+          "id": "braided_rawhide_formula",
+          "name": "Braided rawhide formula",
+          "type": "document",
+          "summary": "Rawhide braided with starch and protein."
+        },
+        {
+          "id": "yak_cheese_ingredient_sheet",
+          "name": "Yak cheese ingredient sheet",
+          "type": "document",
+          "summary": "Yak milk, lime juice, and sea salt are hardened and dried into a chew."
+        },
+        {
+          "id": "compliance_priority_notice",
+          "name": "Compliance priority notice",
+          "type": "document",
+          "summary": "Cheese-based dog chews are a customs compliance priority."
+        }
+      ],
+      "interactions": [
+        {
+          "id": "intake_sku_problem",
+          "location": "office_hub",
+          "actor": "pet_product_importer",
+          "kind": "interview",
+          "prompt": "Ask which SKUs are detained and which products contain dairy.",
+          "discovers": [
+            "compliance_priority_notice"
+          ]
+        },
+        {
+          "id": "inspect_dog_chew_samples",
+          "location": "port_warehouse",
+          "actor": "sku_sample_table",
+          "kind": "inspect_item",
+          "prompt": "Inspect all detained dog chew samples.",
+          "discovers": [
+            "plain_cut_bone_sample",
+            "bone_with_tissue_sample",
+            "rawhide_chew_sample"
+          ]
+        },
+        {
+          "id": "interview_plant_worker",
+          "location": "industrial_edge",
+          "actor": "plant_worker",
+          "kind": "interview",
+          "prompt": "Ask how the chews are cut, extruded, braided, hardened, and flavoured.",
+          "discovers": [
+            "extruded_chew_formula",
+            "braided_rawhide_formula",
+            "yak_cheese_ingredient_sheet"
+          ]
+        },
+        {
+          "id": "submit_sku_matrix",
+          "location": "office_hub",
+          "actor": "desk",
+          "kind": "matrix",
+          "prompt": "Classify each SKU and flag the highest-risk product."
+        }
+      ],
+      "matrix_answers": {
+        "plain_cut_bone_sample": "bone",
+        "bone_with_tissue_sample": "animal_products_nes",
+        "extruded_chew_formula": "preparations_for_animal_feeding",
+        "rawhide_chew_sample": "article_of_leather",
+        "braided_rawhide_formula": "preparations_for_animal_feeding",
+        "yak_cheese_ingredient_sheet": "dairy_product_high_risk"
+      },
+      "theories": [
+        {
+          "id": "composition_and_process",
+          "label": "Composition and process",
+          "summary": "Classify each SKU by what it is made of and how it is produced, then isolate the cheese chew risk.",
+          "quality": "strong",
+          "requires_evidence": [
+            "extruded_chew_formula",
+            "braided_rawhide_formula",
+            "yak_cheese_ingredient_sheet",
+            "compliance_priority_notice"
+          ]
+        },
+        {
+          "id": "all_pet_food",
+          "label": "All pet food",
+          "summary": "Classify everything as pet food because dogs chew it.",
+          "quality": "weak",
+          "requires_evidence": []
+        },
+        {
+          "id": "all_animal_products",
+          "label": "All animal products",
+          "summary": "Classify all animal-origin chews under one animal-product bucket.",
+          "quality": "bad",
+          "requires_evidence": []
+        }
+      ],
+      "resolutions": {
+        "full": {
+          "requires_theory": "composition_and_process",
+          "minimum_correct_matrix_rows": 6,
+          "must_flag": "yak_cheese_ingredient_sheet",
+          "result_text": "The importer gets a usable SKU map and isolates the cheese chew before supply-management duties become a disaster."
+        },
+        "partial": {
+          "minimum_correct_matrix_rows": 4,
+          "must_flag": "yak_cheese_ingredient_sheet",
+          "result_text": "Most SKUs are contained, but the memo still leaves avoidable ambiguity."
+        },
+        "bad": {
+          "result_text": "The cheese chew risk was missed. Customs has found the expensive SKU before the lawyer did."
+        }
+      },
+      "rewards": {
+        "full": {
+          "money": 575,
+          "reputation": 2,
+          "audit_risk": -6,
+          "precedent_note": "production_method_beats_product_vibes"
+        },
+        "partial": {
+          "money": 350,
+          "reputation": 1,
+          "audit_risk": 5
+        },
+        "bad": {
+          "money": 150,
+          "reputation": -1,
+          "audit_risk": 25
+        }
+      },
+      "asset_needs": [
+        "pet product importer NPC",
+        "plant worker NPC",
+        "six dog chew item cards",
+        "SKU matrix UI"
+      ]
+    },
+    {
+      "id": "meaning_of_of",
+      "title": "Meaning Of \"Of\"",
+      "source_part": 7,
+      "difficulty": 4,
+      "client_pitch": "A gelato powder importer faces a 250.5 percent dairy duty because customs says flavoured powders are food preparations of milk.",
+      "primary_issue": "Whether 'of milk' means merely containing milk or being based on milk through functional essentiality.",
+      "locations": [
+        "office_hub",
+        "business_district",
+        "product_lab",
+        "tribunal_room"
+      ],
+      "npcs": [
+        {
+          "id": "gelato_importer",
+          "role": "client",
+          "placeholder_sprite": "elderly_client"
+        },
+        {
+          "id": "food_science_expert",
+          "role": "expert witness",
+          "placeholder_sprite": "elderly_client"
+        },
+        {
+          "id": "tribunal_panel",
+          "role": "tribunal",
+          "placeholder_sprite": "elderly_client"
+        }
+      ],
+      "evidence": [
+        {
+          "id": "ingredient_percentage_sheet",
+          "name": "Ingredient percentage sheet",
+          "type": "document",
+          "summary": "Sugar is the largest component by percentage and milk is less than 50 percent."
+        },
+        {
+          "id": "customs_dairy_assessment",
+          "name": "Customs dairy assessment",
+          "type": "document",
+          "summary": "Customs applied a 250.5 percent dairy duty because the powders contain milk."
+        },
+        {
+          "id": "of_means_based_on_note",
+          "name": "Of means based on note",
+          "type": "precedent",
+          "summary": "Prior reasoning says 'of' means 'based on,' but the meaning of based on needs work."
+        },
+        {
+          "id": "expert_functional_contribution",
+          "name": "Expert functional contribution",
+          "type": "interview",
+          "summary": "Each ingredient contributes to taste, texture, quality, and performance; milk is not more essential than the others."
+        },
+        {
+          "id": "rehydration_process_note",
+          "name": "Rehydration process note",
+          "type": "document",
+          "summary": "The powders require milk or other inputs during manufacturing; the finished performance depends on multiple ingredients."
+        },
+        {
+          "id": "duty_exposure_summary",
+          "name": "Duty exposure summary",
+          "type": "document",
+          "summary": "The case turns a duty-free position into a 250.5 percent exposure if customs wins."
+        }
+      ],
+      "interactions": [
+        {
+          "id": "intake_duty_shock",
+          "location": "office_hub",
+          "actor": "gelato_importer",
+          "kind": "interview",
+          "prompt": "Ask what customs assessed and why the client thinks it is wrong.",
+          "discovers": [
+            "customs_dairy_assessment",
+            "duty_exposure_summary"
+          ]
+        },
+        {
+          "id": "review_ingredient_sheet",
+          "location": "business_district",
+          "actor": "document_box",
+          "kind": "review_document",
+          "prompt": "Review the powder composition and prior wording notes.",
+          "discovers": [
+            "ingredient_percentage_sheet",
+            "of_means_based_on_note",
+            "rehydration_process_note"
+          ]
+        },
+        {
+          "id": "interview_food_expert",
+          "location": "product_lab",
+          "actor": "food_science_expert",
+          "kind": "interview",
+          "prompt": "Ask what each ingredient does in the finished gelato or pastry product.",
+          "discovers": [
+            "expert_functional_contribution"
+          ]
+        },
+        {
+          "id": "tribunal_argument",
+          "location": "tribunal_room",
+          "actor": "tribunal_panel",
+          "kind": "argument",
+          "prompt": "Argue what 'of milk' means."
+        }
+      ],
+      "theories": [
+        {
+          "id": "based_on_functional_essentiality",
+          "label": "Based on essentiality",
+          "summary": "'Of milk' means based on milk; milk must be more essential to purpose and function than the other ingredients.",
+          "quality": "strong",
+          "requires_evidence": [
+            "of_means_based_on_note",
+            "expert_functional_contribution",
+            "ingredient_percentage_sheet"
+          ]
+        },
+        {
+          "id": "less_than_half_milk",
+          "label": "Less than half milk",
+          "summary": "Milk is under 50 percent, so the powders cannot be of milk.",
+          "quality": "partial",
+          "requires_evidence": [
+            "ingredient_percentage_sheet"
+          ]
+        },
+        {
+          "id": "ice_cream_means_dairy",
+          "label": "Ice cream means dairy",
+          "summary": "The powders make ice cream, so customs is probably right.",
+          "quality": "bad",
+          "requires_evidence": []
+        }
+      ],
+      "argument_moves": [
+        {
+          "id": "present_percentages",
+          "label": "Present percentages",
+          "requires_evidence": [
+            "ingredient_percentage_sheet"
+          ],
+          "strength": "medium"
+        },
+        {
+          "id": "reframe_of_as_based_on",
+          "label": "Reframe 'of' as 'based on'",
+          "requires_evidence": [
+            "of_means_based_on_note"
+          ],
+          "strength": "high"
+        },
+        {
+          "id": "present_expert_function",
+          "label": "Present expert function evidence",
+          "requires_evidence": [
+            "expert_functional_contribution"
+          ],
+          "strength": "high"
+        },
+        {
+          "id": "concede_milk_is_important",
+          "label": "Concede milk is important, not controlling",
+          "requires_evidence": [
+            "expert_functional_contribution"
+          ],
+          "strength": "high"
+        },
+        {
+          "id": "complain_about_duty_rate",
+          "label": "Complain about the duty rate",
+          "requires_evidence": [
+            "duty_exposure_summary"
+          ],
+          "strength": "low"
+        }
+      ],
+      "resolutions": {
+        "full": {
+          "requires_theory": "based_on_functional_essentiality",
+          "requires_argument_moves": [
+            "reframe_of_as_based_on",
+            "present_expert_function"
+          ],
+          "result_text": "The panel accepts that containing milk is not enough. The powders are not based on milk because milk is not more essential than the other functional ingredients."
+        },
+        "partial": {
+          "requires_theory": "less_than_half_milk",
+          "result_text": "The percentage point helps, but the argument lacks the expert foundation needed for a clean win."
+        },
+        "bad": {
+          "result_text": "Customs keeps the dairy theory. The client pays for the missing expert record."
+        }
+      },
+      "rewards": {
+        "full": {
+          "money": 900,
+          "reputation": 3,
+          "audit_risk": -8,
+          "precedent_note": "of_means_based_on_essentiality"
+        },
+        "partial": {
+          "money": 450,
+          "reputation": 1,
+          "audit_risk": 8
+        },
+        "bad": {
+          "money": 100,
+          "reputation": -1,
+          "audit_risk": 30
+        }
+      },
+      "asset_needs": [
+        "gelato importer NPC",
+        "food expert NPC",
+        "tribunal panel sprites",
+        "ingredient document cards",
+        "argument pressure meter"
+      ]
+    }
+  ],
+  "precedent_notes": [
+    {
+      "id": "advance_rulings_need_product_story",
+      "title": "Advance rulings need a product story",
+      "effect": "Unlocks stronger advance-ruling dialogue options in later cases."
+    },
+    {
+      "id": "essential_character_after_set_rule",
+      "title": "Essential character only matters after the set rule applies",
+      "effect": "Unlocks threshold-first sorting prompts in bundled-good cases."
+    },
+    {
+      "id": "production_method_beats_product_vibes",
+      "title": "Production method beats product vibes",
+      "effect": "Unlocks production-process questions in manufactured-good cases."
+    },
+    {
+      "id": "of_means_based_on_essentiality",
+      "title": "Of means based on; based on means essentiality",
+      "effect": "Unlocks functional-essentiality argument moves in ingredient cases."
+    }
+  ]
+}
